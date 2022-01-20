@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30907.101
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StepCounter", "StepCounter\StepCounter.csproj", "{887E2CF0-BB13-4DB4-B0FF-530BA2549D02}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StepCounterTest", "StepCounterTest\StepCounterTest.csproj", "{0B7610A7-EEB1-4CEA-9F05-9846ADCC44A1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{887E2CF0-BB13-4DB4-B0FF-530BA2549D02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{887E2CF0-BB13-4DB4-B0FF-530BA2549D02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{887E2CF0-BB13-4DB4-B0FF-530BA2549D02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{887E2CF0-BB13-4DB4-B0FF-530BA2549D02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B7610A7-EEB1-4CEA-9F05-9846ADCC44A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B7610A7-EEB1-4CEA-9F05-9846ADCC44A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B7610A7-EEB1-4CEA-9F05-9846ADCC44A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B7610A7-EEB1-4CEA-9F05-9846ADCC44A1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {25F7CBBC-BBB5-4121-A333-802255567E46}
+	EndGlobalSection
+EndGlobal
