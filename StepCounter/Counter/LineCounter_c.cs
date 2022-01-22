@@ -2,7 +2,7 @@
 
 namespace Counter
 {
-    class LineCounter_c
+    public class LineCounter_c
     {
         private static int countLines(string source)
         {
