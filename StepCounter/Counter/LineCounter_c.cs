@@ -2,11 +2,15 @@
 
 namespace Counter
 {
-    public class LineCounter_c
+    public class LineCounter_c : Counter_if
     {
-        private static int countLines(string source)
+        public int Count(string src)
         {
-            return 0;
+            // 改行文字の数
+            int new_line_char_length = src.Replace("\n", "").Length;
+
+            // 文字列の文字数 - 改行文字数 + 1
+            return (src.Length - new_line_char_length) + 1;
         }
     }
 }

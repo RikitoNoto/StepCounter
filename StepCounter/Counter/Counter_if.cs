@@ -6,5 +6,6 @@ namespace Counter
 {
     interface Counter_if
     {
+        int Count(string src);
     }
 }

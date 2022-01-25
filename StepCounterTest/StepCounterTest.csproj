@@ -4,6 +4,8 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
 
     <IsPackable>false</IsPackable>
+
+    <StartupObject></StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,7 +21,7 @@
 
   <ItemGroup>
     <Reference Include="StepCounter">
-      <HintPath>..\StepCounter\obj\Debug\netcoreapp3.1\StepCounter.dll</HintPath>
+      <HintPath>..\StepCounter\obj\Debug\netcoreapp2.1\StepCounter.dll</HintPath>
     </Reference>
   </ItemGroup>
 
