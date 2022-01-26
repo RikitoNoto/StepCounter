@@ -22,5 +22,13 @@ namespace StepCounterTest
             var counter = new LineCounter_c();
             Assert.AreEqual(2, counter.Count("\n"));
         }
+
+        [TestMethod, TestCategory("count")]
+        public void 改行文字が2文字の時に正しい行数を返すこと()
+        {
+            var counter = new LineCounter_c();
+            LineCounter_c.NEW_LINE_STRING = "\r\n";
+            Assert.AreEqual(4, counter.Count("1行目\r\n2行目\r\n3行目\r\n4行目"));
+        }
     }
 }
