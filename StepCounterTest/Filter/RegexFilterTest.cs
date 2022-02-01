@@ -17,7 +17,7 @@ namespace RegexFilterTest
         /// <param name="src">フィルタリングする文字列</param>
         /// <param name="start_string">開始文字列</param>
         /// <param name="end_string">終了文字列</param>
-        private void checkFiltering(string[] expect_strings, string src, string start, string end)
+        private Filter_if checkFiltering(string[] expect_strings, string src, string start, string end)
         {
             // フィルタークラスを作成
             Filter_if filter = new RegexFilter_c();
@@ -32,6 +32,8 @@ namespace RegexFilterTest
                 Assert.AreEqual(expect, filter_strings[i]);    // 文字列が一致していること
                 i++;
             }
+
+            return filter;
         }
 
         [TestMethod, TestCategory("Filtering")]
@@ -53,9 +55,63 @@ namespace RegexFilterTest
         }
 
         [TestMethod, TestCategory("Filtering")]
-        public void 開始文字列と終了文字列を渡したときにフィルタリングできること()
+        public void 複数文字の開始文字列と終了文字列を渡したときにフィルタリングできること()
+        {
+            this.checkFiltering(new string[] { "aaaaa\n" }, "S↓↓↓\naaaaa\nE↑↑↑", "S↓↓↓\n", "E↑↑↑");
+        }
+
+        [TestMethod, TestCategory("Filtering")]
+        public void 同じ開始文字列と終了文字列を渡したときにフィルタリングできること()
         {
             this.checkFiltering(new string[] { "aaaaa" }, "MaaaaaM", "M", "M");
+        }
+
+        [TestMethod, TestCategory("Filtering")]
+        public void フィルタリング前に開始文字列の出現回数が0であること()
+        {
+            Filter_if filter = new RegexFilter_c();
+
+            Assert.AreEqual(0, filter.StartStringCount);    // 開始文字列の出現回数が0であること
+        }
+
+        [TestMethod, TestCategory("Filtering")]
+        public void フィルタリング後に開始文字列の出現回数を取得できること()
+        {
+            Filter_if filter = this.checkFiltering(new string[] { "aaaaa" }, "SaaaaaEE", "S", "E");
+
+            Assert.AreEqual(1, filter.StartStringCount);    // 開始文字列の出現回数が1であること
+        }
+
+        [TestMethod, TestCategory("Filtering")]
+        public void 複数の開始文字列の出現回数を取得できること()
+        {
+            Filter_if filter = this.checkFiltering(new string[] { "aSaaSSSaa" }, "SaSaaSSSaaE", "S", "E");
+
+            Assert.AreEqual(5, filter.StartStringCount);    // 開始文字列の出現回数が5であること
+        }
+
+        [TestMethod, TestCategory("Filtering")]
+        public void フィルタリング前に終了文字列の出現回数が0であること()
+        {
+            Filter_if filter = new RegexFilter_c();
+
+            Assert.AreEqual(0, filter.EndStringCount);    // 終了文字列の出現回数が0であること
+        }
+
+        [TestMethod, TestCategory("Filtering")]
+        public void フィルタリング後に終了文字列の出現回数を取得できること()
+        {
+            Filter_if filter = this.checkFiltering(new string[] { "aaaaa" }, "SaaaaaEE", "S", "E");
+
+            Assert.AreEqual(2, filter.EndStringCount);    // 開始文字列の出現回数が2であること
+        }
+
+        [TestMethod, TestCategory("Filtering")]
+        public void 複数の終了文字列の出現回数を取得できること()
+        {
+            Filter_if filter = this.checkFiltering(new string[] { "a" }, "SaEaEEEaEaE", "S", "E");
+
+            Assert.AreEqual(6, filter.EndStringCount);    // 開始文字列の出現回数が5であること
         }
     }
 }
