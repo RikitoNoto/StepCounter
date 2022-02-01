@@ -39,6 +39,7 @@ namespace Filter
                 }
             }
 
+            //FIXME: このメソッドを実行するとsrcを3回読み込む必要がある。
             this.start_string_count = this.countAppearances(src, start_string); // 開始文字列の回数をカウント
             this.end_string_count = this.countAppearances(src, end_string); // 終了文字列の回数をカウント
 
