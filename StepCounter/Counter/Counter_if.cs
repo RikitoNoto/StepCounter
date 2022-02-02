@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Counter
 {
-    interface Counter_if
+    public interface Counter_if
     {
         int Count(string src);
     }

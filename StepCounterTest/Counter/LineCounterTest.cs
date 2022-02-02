@@ -3,7 +3,7 @@ using System;
 using StepCounter;
 using Counter;
 
-namespace StepCounterTest
+namespace LineCounterTest
 {
     [TestClass]
     public class LineCounterTest
