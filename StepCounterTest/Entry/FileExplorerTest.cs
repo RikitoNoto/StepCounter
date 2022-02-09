@@ -28,18 +28,63 @@ namespace EntryTest
         /// <param name="path">パス</param>
         private void callEnumerateFilesWithMock(string path)
         {
-            // Mockの作成
-            Shim consoleShim = Shim.Replace(() => Directory.EnumerateFiles(Is.A<string>())).With(
-                delegate (string _path)
-                {
-                    return this.EnumerateFilesSpy(_path); // スパイ関数の呼び出し
-                });
+            this.callEnumerateFilesWithMock(path, null);
+        }
 
-            // MOCKでメソッド実行
-            PoseContext.Isolate(() =>
+        /// <summary>EnumerateFilesメソッドをMockとともに呼び出す</summary>
+        /// <param name="path">パス</param>
+        /// <param name="func">コールバック関数</param>
+        private void callEnumerateFilesWithMock(string path, Func<string, bool> func)
+        {
+            Func<string, IEnumerable<string>> spy_func = delegate(string _path)
             {
-                FileExplorer_c.Explore(path); // Exploreメソッド呼び出し
+                return this.EnumerateFilesSpy(_path); // スパイ関数の呼び出し
+            };
+
+            // Mockの作成
+            Shim consoleShim = Shim.Replace(() => Directory.EnumerateFiles(Is.A<string>())).With(spy_func);
+
+            // Mockでメソッド実行
+            PoseContext.Isolate(delegate()
+            {
+                FileExplorer_c.Explore(path, func); // Exploreメソッド呼び出し
             }, consoleShim);
+        }
+
+        /// <summary>
+        ///     Exploreメソッドを呼び出しコールバック関数が正しく呼び出されることチェックする
+        ///     可変長引数で受け取った数だけ、コールバック関数が呼び出されることをチェックする。
+        /// </summary>
+        /// <param name="paths">
+        ///     コールバック引数に渡される引数
+        /// </param>
+        private void checkCallBackFunc_Explore(params string[] paths)
+        {
+
+            List<string> call_back_args = new List<string>(); // コールバック関数が呼び出されたときの引数
+            int call_count = 0; // コールバック関数が呼び出された回数
+
+            // コールバック関数
+            Func<string, bool> call_back_func = delegate (string path)
+            {
+                call_back_args.Add(path);   // 引数をリストに保存
+                call_count += 1;            // 呼び出し回数を加算
+                return false;
+            };
+
+            foreach(string path in paths)
+            {
+                this.return_value_EnumerateFiles.Add(path); // mockされたEnumerateFilesの返り値リストにpathを追加
+            }
+
+            this.callEnumerateFilesWithMock("src", call_back_func); // mockされたEnumerateFilesメソッドを呼び出し
+
+            Assert.AreEqual(paths.Length, call_count);         // コールバックメソッドが正しい回数呼ばれていること
+
+            for(int i=0; i < paths.Length; i++)
+            {
+                Assert.AreEqual(paths[i], call_back_args[i]);     // コールバック関数呼び出し時の引数が正しいこと
+            }
         }
 
         /// <summary>EnumerateFilesメソッドのスパイメソッド</summary>
@@ -56,7 +101,8 @@ namespace EntryTest
         }
 
         [TestMethod, TestCategory("Explore")]
-        public void 引数で受け取った空文字列でEnumerateFilesを呼び出すこと()
+        [Description("一つのディレクトリの探索ができること")]
+        public void 引数で渡した空文字列でEnumerateFilesを呼び出すこと()
         {
             this.callEnumerateFilesWithMock("");
 
@@ -65,7 +111,8 @@ namespace EntryTest
         }
 
         [TestMethod, TestCategory("Explore")]
-        public void 引数で受け取ったパスでEnumerateFilesを呼び出すこと()
+        [Description("一つのディレクトリの探索ができること")]
+        public void 引数で渡したパスでEnumerateFilesを呼び出すこと()
         {
             this.callEnumerateFilesWithMock("src");
 
@@ -74,12 +121,17 @@ namespace EntryTest
         }
 
         [TestMethod, TestCategory("Explore")]
-        public void EnumerateFilesが返したファイルを引数にコールバック関数を実行すること()
+        [Description("一つのディレクトリの探索ができること")]
+        public void EnumerateFilesが返した1つのファイルを引数にコールバック関数を実行すること()
         {
-            //this.callEnumerateFilesWithMock("src");
+            this.checkCallBackFunc_Explore("file.c");
+        }
 
-            //Assert.IsTrue(this.called_count_EnumerateFiles > 0);       // 一度でもEnumerateFilesメソッドが呼ばれていること
-            //Assert.AreEqual(this.args_EnumerateFiles[0][0], "src");    // 引数は空の文字列であること
+        [TestMethod, TestCategory("Explore")]
+        [Description("一つのディレクトリの探索ができること")]
+        public void EnumerateFilesが返した2つのファイルを引数にコールバック関数を実行すること()
+        {
+            this.checkCallBackFunc_Explore("file1.c", "file2.c");
         }
     }
 }
